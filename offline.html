@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Prerna — Offline</title>
+<style>
+  body{margin:0;min-height:100svh;display:flex;align-items:center;justify-content:center;
+    background:#080a12;color:#f7f7fb;font:15px system-ui,-apple-system,Segoe UI,sans-serif;text-align:center;padding:24px}
+  .box{max-width:360px}
+  img{width:88px;height:88px;border-radius:50%;margin-bottom:16px}
+  h1{font-size:1.3rem;margin:0 0 8px}
+  p{color:#a9adbd;line-height:1.5;margin:0 0 18px}
+  button{font:inherit;font-weight:750;height:46px;padding:0 22px;border:0;border-radius:12px;
+    background:#9b72ff;color:#080a12;cursor:pointer}
+</style>
+</head>
+<body>
+  <div class="box">
+    <img src="icons/icon-96.png" alt="Prerna logo">
+    <h1>You're offline</h1>
+    <p>Prerna needs a connection to load fresh content. If you've opened the calculator before, try going back — it may already be cached.</p>
+    <button onclick="location.reload()">Try Again</button>
+  </div>
+</body>
+</html>
