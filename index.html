@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#050507">
+<meta name="description" content="Prerna Numerology Calculator — a beautiful installable numerology PWA.">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Prerna">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<title>Prerna — Numerology Calculator</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:#050507;color:#fff}
+body{display:flex;justify-content:center;background:radial-gradient(circle at 50% 25%,#171027 0,#07070a 42%,#000 100%)}
+main{width:min(960px,100%);padding:24px 16px 40px}
+header{text-align:center;padding:10px 0 20px}
+h1{font-size:clamp(2rem,7vw,3.5rem);margin:.1em 0;background:linear-gradient(90deg,#fff,#ffd36b,#fff);-webkit-background-clip:text;color:transparent}
+.subtitle{margin:0;color:#c9c4d5;font-size:.95rem}
+.hero{max-width:620px;margin:0 auto;border:1px solid #3b2b55;border-radius:28px;padding:14px;background:rgba(255,255,255,.045);box-shadow:0 20px 70px #000}
+.hero img{display:block;width:100%;height:auto;border-radius:20px}
+.actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:22px 0}
+button{border:0;border-radius:999px;padding:12px 20px;font-weight:700;font-size:.95rem;cursor:pointer}
+.install{background:linear-gradient(135deg,#ffd66b,#e78c16);color:#140d00}
+.secondary{background:#18151e;color:#fff;border:1px solid #493b5d}
+.info{max-width:760px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.card{border:1px solid #2d2637;background:rgba(255,255,255,.04);border-radius:18px;padding:18px}
+.card h2{font-size:1rem;margin:0 0 8px;color:#ffd56c}.card p{margin:0;color:#c6c0cf;line-height:1.55;font-size:.9rem}
+#status{text-align:center;min-height:1.4em;color:#bdb6c9;font-size:.82rem;margin-top:4px}
+footer{text-align:center;color:#77717f;font-size:.78rem;margin-top:28px}
+</style>
+</head>
+<body>
+<main>
+<header>
+<h1>Prerna</h1>
+<p class="subtitle">Numerology Calculator</p>
+</header>
+
+<section class="hero">
+<img src="icons/icon-512.png" alt="Mystical golden numerology wheel">
+</section>
+
+<div class="actions">
+<button id="installBtn" class="install" hidden>⬇ Install Prerna</button>
+<button id="shareBtn" class="secondary">↗ Share App</button>
+</div>
+<div id="status"></div>
+
+<section class="info">
+<article class="card"><h2>Desktop Installation</h2><p>Open this app over HTTPS (or localhost) in a supported browser. When the browser makes the PWA installable, use the Install Prerna button or the browser's install icon.</p></article>
+<article class="card"><h2>Mobile Home Screen</h2><p>On Android Chrome, use the browser menu and choose Install app or Add to Home screen when offered. On iPhone/iPad Safari, use Share → Add to Home Screen.</p></article>
+<article class="card"><h2>Works Offline</h2><p>The service worker caches the app shell and icons so the installed app can open again without a network connection.</p></article>
+</section>
+
+<footer>© <span id="year"></span> Manik Roy. All Rights Reserved.</footer>
+</main>
+<script>
+let deferredPrompt;
+const installBtn=document.getElementById('installBtn');
+const status=document.getElementById('status');
+document.getElementById('year').textContent=new Date().getFullYear();
+
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault();
+  deferredPrompt=e;
+  installBtn.hidden=false;
+  status.textContent='This browser has made Prerna installable.';
+});
+installBtn.addEventListener('click',async()=>{
+  if(!deferredPrompt){status.textContent='Use your browser menu to install or add Prerna to your home screen.';return}
+  deferredPrompt.prompt();
+  await deferredPrompt.userChoice;
+  deferredPrompt=null;
+  installBtn.hidden=true;
+});
+window.addEventListener('appinstalled',()=>{
+  status.textContent='Prerna has been installed.';
+  installBtn.hidden=true;
+});
+document.getElementById('shareBtn').addEventListener('click',async()=>{
+  const data={title:'Prerna — Numerology Calculator',text:'Prerna Numerology Calculator',url:location.href};
+  if(navigator.share) await navigator.share(data);
+  else {await navigator.clipboard.writeText(location.href);status.textContent='App link copied.';}
+});
+if('serviceWorker' in navigator) window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js'));
+</script>
+</body>
+</html>
